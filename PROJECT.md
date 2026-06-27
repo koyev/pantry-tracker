@@ -6,7 +6,7 @@
 >
 > **⚠️ Verify-before-trusting:** SDK 56 post-dates some tooling knowledge and the live Expo docs may be unreachable in CI/agent sandboxes. Every SDK-56 API named below (camera barcode props, sqlite methods, native-tabs surface, notification trigger shape) is a **target to confirm against the installed TypeScript types** in `node_modules/expo-*` before relying on it.
 
-A simple, minimalist app to scan groceries, track what you have, and get alerted before food expires. Built solo on Windows + iPhone, shipped to iOS, Android, and web from one codebase.
+A simple, minimalist app to scan groceries, track what you have, and get alerted before food expires. Built solo on Windows + iPhone, shipped to iOS and Android from one codebase.
 
 ---
 
@@ -24,7 +24,9 @@ A simple, minimalist app to scan groceries, track what you have, and get alerted
 - Works fully offline. No login required to use the core app.
 - Calm, not nagging. Notifications are helpful, never spammy.
 
-**Explicit non-goals for v1:** No accounts/login, no cloud sync, no barcode generation, no recipes, no nutrition tracking, no multi-user. These are future features, not v1.
+**Explicit non-goals for v1:** No accounts/login, no cloud sync, no barcode generation, no recipes, no nutrition tracking, no multi-user, **no web app**. These are future features, not v1.
+
+**Platforms:** v1 ships to **iOS and Android only.** The app's core action — scanning a barcode with the phone camera in the kitchen — is inherently mobile, and the device features it relies on (camera, scheduled local notifications) degrade or don't work on web. Web is therefore *not* an app target. A simple **marketing/landing page** is built at the very end of v1 (see §11) — separate from the app, not the React Native code running in a browser.
 
 ---
 
@@ -164,7 +166,7 @@ Computed from days until `expiryDate` (today = day 0). Keep these constants in `
 
 ## 8. Tech stack & conventions (Windows + iPhone friendly)
 
-- **Framework:** React Native + **Expo SDK 56** (one codebase → iOS, Android, web). No Mac needed.
+- **Framework:** React Native + **Expo SDK 56** (one codebase → iOS + Android). No Mac needed. (Web is not a v1 target — see §1.)
 - **iOS builds:** **EAS Build** (Expo cloud) compiles the iOS binary; install on your iPhone to test. `app.json` already carries the EAS `projectId`.
 - **Navigation:** **expo-router** with the new **`NativeTabs`** (`expo-router/unstable-native-tabs`), already wired in `src/components/app-tabs.tsx`. (`@react-navigation/*` is no longer a dependency.) `NativeTabs` is an `unstable-` API — confirm its surface against installed types before extending it.
 - **Scanning:** **`expo-camera`** (`CameraView` + `useCameraPermissions` + barcode-scanning props such as `onBarcodeScanned` / `barcodeScannerSettings` — confirm exact names against SDK 56 types). **Do not use `expo-barcode-scanner`** — it is removed in modern SDKs.
@@ -275,7 +277,7 @@ Ship v1 **100% free** to learn the publishing pipeline and gather reviews. Add P
 3. **Week 3** — `expo-camera` scanning + Open Food Facts lookup wired into Scan.
 4. **Week 4** — Expiry sorting, status dots (Section 5.1), local notifications, Settings.
 5. **Week 5** — Polish: empty states, icon, splash screen; finalize subtitle/keyword field/screenshots (Section 9); make an **EAS development build** and test camera + notifications on your iPhone.
-6. **Week 6** — Store assets (screenshots per 9.4, description), submit.
+6. **Week 6** — Store assets (screenshots per 9.4, description), submit. Finally, build a simple **marketing/landing page** (a static site — not the app in a browser): app name, the color-coded list screenshot, store links.
 
 ---
 

@@ -7,8 +7,9 @@ import { ItemForm, type ItemFormValues } from '@/components/item-form';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
-import { addItem } from '@/lib/db';
+import { addItem, countItems, getSettings } from '@/lib/db';
 import { lookupBarcode } from '@/lib/openFoodFacts';
+import { requestNotificationPermission } from '@/lib/notifications';
 import { useTheme } from '@/hooks/use-theme';
 
 type Stage = 'scan' | 'looking-up' | 'form';
@@ -37,6 +38,12 @@ export default function ScanScreen() {
 
   async function save(values: ItemFormValues) {
     await addItem(values);
+    // US-5/§7: ask for notification permission at a sensible moment — right after
+    // the first item is added, not on launch. Home reschedules on focus.
+    if ((await countItems()) === 1) {
+      const settings = await getSettings();
+      if (settings.notificationsEnabled) await requestNotificationPermission();
+    }
     router.back();
   }
 

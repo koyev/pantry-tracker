@@ -25,12 +25,11 @@ export default function HomeScreen() {
     setLoaded(true);
     // Keep the daily summary fresh whenever the list might have changed.
     await rescheduleExpiry(list, settings);
-    // US-7: prompt for a review once, after the first item exists.
-    if (list.length > 0 && !settings.hasReviewed) {
+    // US-7: prompt for a review once, after the first item exists. Only burn the
+    // flag if the prompt is actually available, so we retry later if it isn't.
+    if (list.length > 0 && !settings.hasReviewed && (await StoreReview.isAvailableAsync())) {
       await setSettings({ hasReviewed: true });
-      if (await StoreReview.isAvailableAsync()) {
-        await StoreReview.requestReview();
-      }
+      await StoreReview.requestReview();
     }
   }, []);
 
