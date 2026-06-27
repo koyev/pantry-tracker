@@ -14,6 +14,9 @@ export const Colors = {
     backgroundElement: '#F0F0F3',
     backgroundSelected: '#E0E1E6',
     textSecondary: '#60646C',
+    statusFresh: '#2E9E55', // green  — more than EXPIRY_AMBER_DAYS left
+    statusSoon: '#E0A106', // amber  — 0..EXPIRY_AMBER_DAYS left
+    statusExpired: '#E5484D', // red  — expired
   },
   dark: {
     text: '#ffffff',
@@ -21,6 +24,9 @@ export const Colors = {
     backgroundElement: '#212225',
     backgroundSelected: '#2E3135',
     textSecondary: '#B0B4BA',
+    statusFresh: '#46C871',
+    statusSoon: '#FFC53D',
+    statusExpired: '#FF6369',
   },
 } as const;
 
@@ -63,3 +69,9 @@ export const Spacing = {
 
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;
+
+/**
+ * Expiry status thresholds (PROJECT.md §5.1) — single source of truth.
+ * Green: daysLeft > EXPIRY_AMBER_DAYS. Amber: 0..EXPIRY_AMBER_DAYS. Red: daysLeft < 0.
+ */
+export const EXPIRY_AMBER_DAYS = 3;
