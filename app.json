@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "Pantry Tracker — Stockpile",
-    "slug": "stockpile",
+    "slug": "pantry-tracker-stockpile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "stockpile",
+    "scheme": "pantry-tracker-stockpile",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
@@ -39,6 +39,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "530fef90-9702-46d5-8a36-ce87bc2206f2"
+      }
+    },
+    "owner": "koyev"
   }
 }
